@@ -14,16 +14,10 @@ import (
 
 // pkgReady is whether this package
 // can be used on the current system
-var pkgReady bool
+var pkgReady = procheck.IsInstalled("dmenu")
 
-func init() {
-	pkgReady = procheck.IsInstalled("dmenu")
-}
-
-// items seperated by '\n'
+// str is the opts seperated by '\n'
 // flag are the array of flags passed to dmenu
-// if last flag requires input, str will become that
-// input and errors will arrise.
 func Prompt(str string, flags []string) (string, error) {
 	if !pkgReady {
 		return "", errors.New("dmenu not installed!")

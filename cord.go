@@ -49,6 +49,7 @@ func (c *client) printGuildPeople() error {
 	return nil
 }
 
+// TODO fix this
 func (c *client) printMessages() error {
 	guilds, err := c.Guilds()
 	if err != nil {

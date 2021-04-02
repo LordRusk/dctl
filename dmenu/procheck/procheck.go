@@ -1,5 +1,5 @@
 // procheck is a package to check
-// if a system a given binary
+// if a system has a given binary
 package procheck
 
 import (
