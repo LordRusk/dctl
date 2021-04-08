@@ -9,10 +9,12 @@ import (
 )
 
 var mainMenu = ui.Menu{
-	"p": "Print Guilds",
-	"P": "Print Guilds and Members",
-	"m": "Print messages from a guild",
-	"x": "Exit",
+	"p":  "Print Guilds",
+	"P":  "Print Guilds and Members",
+	"m":  "Print messages from a guild",
+	"cg": "Copy a guilds ID",
+	"cc": "Copy a channels ID",
+	"x":  "Exit",
 }
 
 func (c *client) mainLoop() error {
@@ -35,6 +37,14 @@ func (c *client) mainLoop() error {
 		case "m":
 			if err := c.printMessages(); err != nil {
 				fmt.Printf("failed to print messages: %s\n", err)
+			}
+		case "cg":
+			if err := c.copyGuildID(); err != nil {
+				fmt.Printf("Failed to copy guild id: %s\n", err)
+			}
+		case "cc":
+			if err := c.copyChannelID(); err != nil {
+				fmt.Printf("Failed to copy channel id: %s\n", err)
 			}
 		case "x":
 			return nil

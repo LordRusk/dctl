@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"strconv"
 	"syscall"
 
 	"github.com/pkg/errors"
@@ -42,6 +43,18 @@ func (h *Handler) NextString() (string, error) {
 		return "", errors.New("Nothing to scan!")
 	}
 	return h.sc.Text(), nil
+}
+
+func (h *Handler) NextInt() (int, error) {
+	str, err := h.NextString()
+	if err != nil {
+		return 0, err
+	}
+	num, err := strconv.Atoi(str)
+	if err != nil {
+		return 0, errors.Wrap(err, "failed to convert string to int")
+	}
+	return num, err
 }
 
 // bad name, I know.

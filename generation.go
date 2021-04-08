@@ -12,5 +12,5 @@ import (
 )
 
 func genMessage(g *discord.Guild, ch *discord.Channel, m *discord.Message) (string, error) {
-	return fmt.Sprintf("%s: %s: %s\n", g.Name, ch.Name, strings.TrimSpace(m.Content)), nil
+	return fmt.Sprintf("%s: %s: %s: %s", g.Name, ch.Name, m.Author.Username, strings.TrimSpace(m.Content)), nil
 }

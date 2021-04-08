@@ -25,18 +25,23 @@ func TestHandler(t *testing.T) {
 	}, func(err error) {
 		fmt.Println(err)
 	})
+
 	if err := h.Stop(); err == nil { // this should return an error
 		t.Error("(*Handler).Stop() should return an error when handler is not running!")
 	}
+
 	h.Start()
+
 	if err := h.Start(); err == nil { // this should return an error
 		t.Error("(*Handler).Start() should return an error when handler is not running!")
 	}
 	time.Sleep(time.Duration(1) * time.Second)
+
 	h.Stop()
 	if len(strs) != 19 {
 		t.Error("Number os strings should be 19....so make a better fucking test dipshit")
 	}
+
 	h.Start()
 	time.Sleep(time.Duration(20) * time.Millisecond)
 	h.Stop()
@@ -53,6 +58,7 @@ func TestHandlerErrors(t *testing.T) {
 	}, func(err error) {
 		metaErrCh <- err
 	})
+
 	h.Start()
 	err := <-metaErrCh
 	if err == nil {

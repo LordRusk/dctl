@@ -41,6 +41,7 @@ func (h *Handler) Start() error {
 	if h.running {
 		return errors.New("Handler already running!")
 	}
+
 	go func() {
 		select {
 		case err := <-h.errCh:
@@ -52,6 +53,7 @@ func (h *Handler) Start() error {
 			return
 		}
 	}()
+
 	go h.hf(h.killHan, h.errCh)
 	h.running = true
 	return nil
@@ -63,6 +65,7 @@ func (h *Handler) Stop() error {
 	if !h.running {
 		return errors.New("Handler already running!")
 	}
+
 	h.killErr <- struct{}{}
 	h.running = false
 	return nil

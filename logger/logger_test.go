@@ -18,6 +18,7 @@ func TestLogger(t *testing.T) {
 			t.Errorf("Failed to remove test log file: %s\n", err)
 		}
 	}()
+
 	l.Print(loggerTestText)
 	bites, err := os.ReadFile(loggerTestFile)
 	if err != nil {

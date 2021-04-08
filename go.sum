@@ -1,5 +1,7 @@
-github.com/diamondburned/arikawa/v2 v2.0.5 h1:X/jPfeEFj/Hzk26kudNJqtVkQb3vnh3tAjEF1mY7GK8=
-github.com/diamondburned/arikawa/v2 v2.0.5/go.mod h1:e+lhS20ni2luFEU06Pc8paCxgZL99/RZb77dOC82CF0=
+github.com/atotto/clipboard v0.1.4 h1:EH0zSVneZPSuFR11BlR9YppQTVDbh5+16AmcJi4g1z4=
+github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
+github.com/diamondburned/arikawa/v2 v2.0.6 h1:KQKyIyzSBtk/Ei7qyDOWiDqhi7vTlXCN293YWIyDbDk=
+github.com/diamondburned/arikawa/v2 v2.0.6/go.mod h1:e+lhS20ni2luFEU06Pc8paCxgZL99/RZb77dOC82CF0=
 github.com/gorilla/schema v1.2.0 h1:YufUaxZYCKGFuAq3c96BOhjgd5nmXiOY9NGzF247Tsc=
 github.com/gorilla/schema v1.2.0/go.mod h1:kgLaKoK1FELgZqMAVxx/5cbj0kT+57qxUrAlIO2eleU=
 github.com/gorilla/websocket v1.4.2 h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0Ufc=
