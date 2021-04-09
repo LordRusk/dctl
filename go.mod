@@ -6,5 +6,6 @@ require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/diamondburned/arikawa/v2 v2.0.6
 	github.com/pkg/errors v0.9.1
+	github.com/pkg/profile v1.5.0
 	golang.org/x/term v0.0.0-20210317153231-de623e64d2a6
 )

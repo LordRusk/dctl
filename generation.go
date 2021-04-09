@@ -63,14 +63,23 @@ func trimExt(str string) string {
 	return strings.Join(sstr[:len(sstr)-1], ".")
 }
 
+// returns the extentions of a file
+// index.md -> .mc
+func getExt(str string) string {
+	sstr := strings.Split(str, ".")
+	return "." + sstr[len(sstr)-1]
+}
+
 // dlAtt is whether to download attachments with messages
 func genMessage(guild *discord.Guild, channel *discord.Channel, message *discord.Message, c *client, dlAtt bool) (string, error) {
 	var str string
 	if message.Timestamp.IsValid() {
 		h, m, s := message.Timestamp.Time().Clock()
-		str = fmt.Sprintf("%s: %s %d:%d:%d %s -> %s | %d embeds | ID: %s", guild.Name, channel.Name, h, m, s, message.Author.Username, message.Content, len(message.Embeds), message.ID)
+		str = fmt.Sprintf("%s: %s %d:%d:%d %s -> %s | %d embeds | ID: %s",
+			guild.Name, channel.Name, h, m, s, message.Author.Username, message.Content, len(message.Embeds), message.ID)
 	} else {
-		str = fmt.Sprintf("%s: %s: %s -> %s | %d embeds | ID: %s", guild.Name, channel.Name, message.Author.Username, message.Content, len(message.Embeds), message.ID)
+		str = fmt.Sprintf("%s: %s: %s -> %s | %d embeds | ID: %s",
+			guild.Name, channel.Name, message.Author.Username, message.Content, len(message.Embeds), message.ID)
 	}
 
 	if atRegex.MatchString(str) {
@@ -90,8 +99,8 @@ func genMessage(guild *discord.Guild, channel *discord.Channel, message *discord
 
 	for _, attachment := range message.Attachments {
 		if dlAtt { // download if needed
-			if err := c.Download(attachment.URL, trimExt(*logFile)+"/"+strconv.Itoa(int(message.ID))); err != nil {
-				c.Printf("Failed to download '%s' to '%s'", attachment.URL, trimExt(*logFile)+"/"+strconv.Itoa(int(message.ID)))
+			if err := c.Download(attachment.URL, trimExt(*logFile)+"/"+attachment.Filename); err != nil {
+				c.Printf("Failed to download '%s' to '%s': %s", attachment.URL, trimExt(*logFile)+"/"+strconv.Itoa(int(message.ID)), err)
 			}
 		}
 		str += fmt.Sprintf("\n%sName: %s, URL: %s", Tab, strings.TrimSpace(attachment.Filename), attachment.URL)

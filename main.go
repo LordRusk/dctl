@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pkg/profile"
+
 	"github.com/diamondburned/arikawa/v2/gateway"
 	"github.com/diamondburned/arikawa/v2/state"
 	"github.com/lordrusk/dctl/logger"
@@ -30,8 +32,24 @@ var defaultDmenuOpts = []string{"-l", "10"} // nice looking defaults
 
 var limit = flag.Uint("l", 100, "Set the limit for discord requests") // default api value
 
+// profiling
+var cpuProf = flag.Bool("cpu", false, "Create a cpu profile (Overwrites -mem)")
+var memProf = flag.Bool("mem", false, "Create a memory profile")
+var memProfRate = flag.Int("memRate", 0, "Set the memory profile rate")
+
 func main() {
 	flag.Parse()
+
+	if *cpuProf { // profiling
+		defer profile.Start(profile.CPUProfile, profile.ProfilePath(".")).Stop()
+	} else if *memProf {
+		if *memProfRate != 0 {
+			defer profile.Start(profile.MemProfile, profile.MemProfileRate(*memProfRate), profile.ProfilePath(".")).Stop()
+		} else {
+			defer profile.Start(profile.MemProfile, profile.ProfilePath(".")).Stop()
+		}
+	}
+
 	l, err := logger.New(os.Stdin, "", 0, *logFile)
 	if err != nil {
 		fmt.Printf("Failed to get client: %s\n", err)

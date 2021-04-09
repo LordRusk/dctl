@@ -135,7 +135,7 @@ func (c *client) printMessages() error {
 		return errors.Wrap(err, "Unable to get input")
 	}
 	var dlAtt bool
-	fmt.Print("Download attachments (may cause function to take a very long time) [y/N]")
+	fmt.Print("Download attachments (may cause function to take a very long time) [y/N]: ")
 	str, err := c.NextString()
 	if err != nil {
 		return errors.Wrap(err, "Unable to get input")

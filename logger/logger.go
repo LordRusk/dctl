@@ -45,7 +45,7 @@ func New(out io.Writer, prefix string, flag int, path string) (*Logger, error) {
 	if err := os.MkdirAll(Parent(path), 0777); err != nil {
 		return nil, errors.Wrap(err, "Failed creating log file")
 	}
-	f, err := os.Create(Home(path))
+	f, err := os.Create(path)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not create file")
 	}
