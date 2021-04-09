@@ -24,6 +24,7 @@ var logFile = flag.String("f",
 var token = flag.String("t", "", "Set the token (skips login)")
 var isBot = flag.Bool("b", false, "Whether or not the account is a bot")
 
+// unused as of now
 var useDmenu = flag.Bool("d", false, "Use dmenu for list inputs (dmenu must be installed)")
 var defaultDmenuOpts = []string{"-l", "10"} // nice looking defaults
 
@@ -62,6 +63,7 @@ func main() {
 		fmt.Println("somehow failed to get the state?")
 		os.Exit(1)
 	}
+
 	addIntents(c)
 
 	if err := c.mainLoop(); err != nil {

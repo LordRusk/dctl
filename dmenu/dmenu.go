@@ -17,7 +17,7 @@ import (
 var pkgReady = procheck.IsInstalled("dmenu")
 
 // str is the opts seperated by '\n'
-// flag are the array of flags passed to dmenu
+// flags are the array of flags passed to dmenu
 func Prompt(str string, flags []string) (string, error) {
 	if !pkgReady {
 		return "", errors.New("dmenu not installed!")

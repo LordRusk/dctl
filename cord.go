@@ -134,6 +134,15 @@ func (c *client) printMessages() error {
 	if err != nil {
 		return errors.Wrap(err, "Unable to get input")
 	}
+	var dlAtt bool
+	fmt.Print("Download attachments (may cause function to take a very long time) [y/N]")
+	str, err := c.NextString()
+	if err != nil {
+		return errors.Wrap(err, "Unable to get input")
+	}
+	if strings.ToLower(str) == "y" {
+		dlAtt = true
+	}
 
 	guilds, err := c.Guilds()
 	if err != nil {
@@ -171,7 +180,7 @@ func (c *client) printMessages() error {
 			}
 			msgss := make([]string, len(messages)) // I'm not good at naming I know
 			for pos, message := range messages {
-				msg, err := genMessage(g, &channel, &message)
+				msg, err := genMessage(g, &channel, &message, c, dlAtt)
 				if err != nil {
 					return errors.Wrap(err, "Failed to generate message")
 				}
@@ -196,7 +205,7 @@ func (c *client) printMessages() error {
 			return errors.Wrap(err, "Failed to get messages")
 		}
 		for pos, message := range messages { // this is done to keep messages ordered
-			msg, err := genMessage(g, ch, &message)
+			msg, err := genMessage(g, ch, &message, c, dlAtt)
 			if err != nil {
 				return errors.Wrap(err, "Failed to generate message")
 			}
