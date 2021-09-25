@@ -12,13 +12,7 @@ import (
 
 var home string
 
-func init() {
-	var err error
-	home, err = os.UserHomeDir()
-	if err != nil {
-		panic("logger: could not get home directory!")
-	}
-}
+func init() { home, _ = os.UserHomeDir() }
 
 type Logger struct {
 	*log.Logger

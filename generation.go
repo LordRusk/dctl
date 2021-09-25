@@ -98,11 +98,11 @@ func genMessage(guild *discord.Guild, channel *discord.Channel, message *discord
 	}
 
 	for _, attachment := range message.Attachments {
-		if dlAtt { // download if needed
-			if err := c.Download(attachment.URL, trimExt(*logFile)+"/"+attachment.Filename); err != nil {
-				c.Printf("Failed to download '%s' to '%s': %s", attachment.URL, trimExt(*logFile)+"/"+strconv.Itoa(int(message.ID)), err)
-			}
-		}
+		// if dlAtt { // download if needed
+		// 	if err := c.Download(attachment.URL, trimExt(*logFile)+"/"+attachment.Filename); err != nil {
+		// 		c.Printf("Failed to download '%s' to '%s': %s", attachment.URL, trimExt(*logFile)+"/"+strconv.Itoa(int(message.ID)), err)
+		// 	}
+		// }
 		str += fmt.Sprintf("\n%sName: %s, URL: %s", Tab, strings.TrimSpace(attachment.Filename), attachment.URL)
 	}
 

@@ -61,9 +61,8 @@ func (c *client) uiLogin() error {
 		}
 		switch k {
 		case "t":
-			fmt.Print("Enter token (use -b for bots): ")
 			var err error
-			*token, err = c.Input(false)
+			*token, err = c.NextString("Enter token (use -b for bots): ")
 			if err != nil {
 				return errors.Wrap(err, "Failed getting user input")
 			}
@@ -79,18 +78,15 @@ func (c *client) uiLogin() error {
 			c.State = s
 			return nil
 		case "e":
-			fmt.Print("Enter email: ")
-			email, err := c.Input(false)
+			email, err := c.NextString("Enter email: ")
 			if err != nil {
 				return errors.Wrap(err, "Failed getting user input for email")
 			}
-			fmt.Print("Enter password: ")
-			pass, err := c.Input(true)
+			pass, err := c.NextString("Enter password: ")
 			if err != nil {
 				return errors.Wrap(err, "Failed getting user input for pass")
 			}
-			fmt.Print("Enter MFA (leave blank if unsure): ")
-			mfa, err := c.Input(false)
+			mfa, err := c.NextString("Enter MFA (leave blank if unsure): ")
 			if err != nil {
 				return errors.Wrap(err, "Failed getting user input for mfa")
 			}
@@ -106,5 +102,6 @@ func (c *client) uiLogin() error {
 			fmt.Println("Option out of range!")
 		}
 	}
+
 	return errors.New("You shouldn't be here...")
 }

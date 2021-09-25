@@ -29,6 +29,7 @@ var isBot = flag.Bool("b", false, "Whether or not the account is a bot")
 // unused as of now
 var useDmenu = flag.Bool("d", false, "Use dmenu for list inputs (dmenu must be installed)")
 var defaultDmenuOpts = []string{"-l", "10"} // nice looking defaults
+var dmenuPassOpt = flag.String("p", "", "Set the option used for password input with dmenu (must be patched)")
 
 var limit = flag.Uint("l", 100, "Set the limit for discord requests") // default api value
 
@@ -59,7 +60,7 @@ func main() {
 			fmt.Printf("Failed to close logger: %s\n", err)
 		}
 	}()
-	c := newClient(l, setupDefaultHandlerFunc)
+	c := newClient(l, setupDefaultHandlerFunc, *dmenuPassOpt)
 
 	if *token == "" {
 		if err := c.uiLogin(); err != nil {
@@ -72,7 +73,7 @@ func main() {
 		}
 		s, err := state.New(*token)
 		if err != nil {
-			fmt.Println("Could not get state: %s\n", err)
+			fmt.Printf("Could not get state: %s\n", err)
 			os.Exit(1)
 		}
 		c.State = s

@@ -1,5 +1,7 @@
 // ui is a simple abstraction for implementing easily scriptable
 // user interfaces in cli/tui enviroments.
+//
+// implements github.com/lordrusk/dctl/menu
 package ui
 
 import (
@@ -11,6 +13,8 @@ import (
 
 	"github.com/pkg/errors"
 	"golang.org/x/term"
+
+	"github.com/lordrusk/dctl/menu"
 )
 
 type Menu map[interface{}]interface{}
@@ -18,38 +22,76 @@ type Menu map[interface{}]interface{}
 // A handler function.
 type HandlerFunc func(Menu) (interface{}, interface{}, error)
 
+// TODO implement menu usage in
+// Handler and Screen
 type Handler struct {
 	sc *bufio.Scanner
 	Hf HandlerFunc
+
+	Flags    []string // used for menu
+	UseMenu  bool
+	PassFlag string
 }
 
-func NewHandler(r io.Reader, sf bufio.SplitFunc) *Handler {
+// passFlag is the flag passed to menu
+// to turn on password input. Can be empty string
+func NewHandler(r io.Reader, sf bufio.SplitFunc, flags []string, passFlag string, useMenu bool) *Handler {
 	s := bufio.NewScanner(r)
 	s.Split(sf)
-	return &Handler{sc: s}
+	return &Handler{sc: s, Flags: flags, PassFlag: passFlag, UseMenu: useMenu}
 }
 
 // get the next input as a []byte
-func (h *Handler) NextBytes() ([]byte, error) {
+func (h *Handler) NextBytes(prompt string) ([]byte, error) {
+	if h.UseMenu {
+		d, err := menu.NewDmenu("", append(h.Flags, "-p", prompt), h.PassFlag, nil)
+		if err != nil {
+			return nil, err
+		}
+		d.Prompt(false)
+		return d.Bytes(), err
+	}
+
+	if prompt != "" {
+		fmt.Println(prompt)
+	}
 	if !h.sc.Scan() {
-		return nil, errors.New("Nothing to scan!")
+		return nil, errors.Wrap(h.sc.Err(), "Nothing to scan!")
 	}
 	return h.sc.Bytes(), nil
 }
 
 // get the next input as a string
-func (h *Handler) NextString() (string, error) {
+func (h *Handler) NextString(prompt string) (string, error) {
+	if h.UseMenu {
+		d, err := menu.NewDmenu("", append(h.Flags, "-p", prompt), h.PassFlag, nil)
+		if err != nil {
+			return "", err
+		}
+
+		d.Prompt(false)
+		return string(d.Bytes()), d.Error()
+	}
+
+	if prompt != "" {
+		fmt.Println(prompt)
+	}
 	if !h.sc.Scan() {
-		return "", errors.New("Nothing to scan!")
+		return "", errors.Wrap(h.sc.Err(), "Nothing to scan!")
 	}
 	return h.sc.Text(), nil
 }
 
-func (h *Handler) NextInt() (int, error) {
-	str, err := h.NextString()
+// get the next input as a int
+func (h *Handler) NextInt(prompt string) (int, error) {
+	str, err := h.NextString(prompt)
 	if err != nil {
 		return 0, err
 	}
+	if str == "" {
+		return 0, errors.New("No input returned!")
+	}
+
 	num, err := strconv.Atoi(str)
 	if err != nil {
 		return 0, errors.Wrap(err, "failed to convert string to int")
@@ -57,35 +99,32 @@ func (h *Handler) NextInt() (int, error) {
 	return num, err
 }
 
-// bad name, I know.
-type Screen struct {
-	*Handler
-}
-
-func New(h *Handler) *Screen {
-	return &Screen{Handler: h}
-}
-
-// most basic use of the ui package
-func (s *Screen) Ask(m Menu) (interface{}, interface{}, error) {
-	return s.Hf(m)
+// menu must be implemented in HandlerFunc
+//
+// for cleaner code
+func (h *Handler) Ask(m Menu) (interface{}, interface{}, error) {
+	return h.Hf(m)
 }
 
 // basic function to get user input
-func (s *Screen) Input(pass bool) (string, error) {
-	var str string
-	var err error
-	if pass {
-		// using golang/x/term.ReadPassword here is the most portable way to do this.
-		var bites []byte
-		bites, err = term.ReadPassword(int(syscall.Stdin))
-		str = string(bites)
-		fmt.Println() // ui fix
-	} else {
-		str, err = s.NextString()
+// allows for password input
+func (h *Handler) PassInput(prompt string) ([]byte, error) {
+	if h.UseMenu {
+		d, err := menu.NewDmenu("", append(h.Flags, "-p", prompt), h.PassFlag, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		d.Prompt(true)
+		return d.Bytes(), d.Error()
 	}
+
+	fmt.Print(prompt)
+	// using golang/x/term.ReadPassword here is the most portable way to do thih.
+	bites, err := term.ReadPassword(int(syscall.Stdin))
+	fmt.Println() // ui fix
 	if err != nil {
-		return "", errors.Wrap(err, "Failed to get next string")
+		return nil, errors.Wrap(err, "Failed to get next string")
 	}
-	return str, nil
+	return bites, nil
 }

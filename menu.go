@@ -15,6 +15,7 @@ var mainMenu = ui.Menu{
 	"f": "Functions",
 	"h": "Handlers",
 	"t": "Tools",
+	"T": "Toggle Menu",
 	"x": "Exit",
 }
 
@@ -38,6 +39,12 @@ func (c *client) mainLoop() error {
 			if err := c.toolLoop(); err != nil {
 				return err
 			}
+		case "T":
+			// toggle menu interally
+			c.Handler.UseMenu = !c.Handler.UseMenu
+			*useDmenu = c.Handler.UseMenu
+
+			fmt.Printf("Menu toggled, current state: %t\n", c.Handler.UseMenu)
 		case "x":
 			return nil
 		default:

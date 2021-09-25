@@ -84,8 +84,7 @@ func (c *client) copyGuildID() error {
 }
 
 func (c *client) copyChannelID() error {
-	fmt.Print("Enter guild's id: ")
-	id, err := c.NextInt()
+	id, err := c.NextInt("Enter guild's id: ")
 	if err != nil {
 		return errors.Wrap(err, "Failed to get input")
 	}
@@ -124,19 +123,18 @@ func (c *client) copyChannelID() error {
 }
 
 func (c *client) printMessages() error {
-	fmt.Print("Enter guild's id: ")
-	gid, err := c.NextInt()
+	gid, err := c.NextInt("Enter guild's id: ")
 	if err != nil {
 		return errors.Wrap(err, "Unable to get input")
 	}
-	fmt.Print("Enter channel's id: ")
-	cidstr, err := c.NextString()
+
+	cidstr, err := c.NextString("Enter channel's id: ")
 	if err != nil {
 		return errors.Wrap(err, "Unable to get input")
 	}
+
 	var dlAtt bool
-	fmt.Print("Download attachments (may cause function to take a very long time) [y/N]: ")
-	str, err := c.NextString()
+	str, err := c.NextString("Download attachments (may cause function to take a very long time) [y/N]: ")
 	if err != nil {
 		return errors.Wrap(err, "Unable to get input")
 	}

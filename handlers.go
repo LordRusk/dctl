@@ -12,6 +12,7 @@ var handlers = make(map[string]handler.Handler)
 
 func (c *client) errorEHF(err error) { c.Printf("Handler failed: %s\n", err) }
 
+// doesn't work
 func (c *client) incMsgsHF(killCh chan struct{}, errCh chan error) {
 	cancel := c.AddHandler(func(m *gateway.MessageCreateEvent) {
 		guild, err := c.Guild(m.GuildID)
