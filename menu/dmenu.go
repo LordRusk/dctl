@@ -30,6 +30,8 @@ type dmenu struct {
 //
 // mapp can be nil and passFlag can be
 // an empty string if not patched
+//
+// mapp can be nil
 func NewDmenu(items string, flags []string, passFlag string, mapp Map) (Menu, error) {
 	if _, err := exec.LookPath("dmenu"); err != nil {
 		return nil, NotInstalled

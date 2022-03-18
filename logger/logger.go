@@ -1,4 +1,3 @@
-// Allows for logging to an io.Writer and a file easily
 package logger
 
 import (
@@ -34,6 +33,7 @@ func Parent(path string) string {
 	return strings.Join(strs[:len(strs)-1], "/")
 }
 
+// Allows for logging to an io.Writer and a file easily
 func New(out io.Writer, prefix string, flag int, path string) (*Logger, error) {
 	path = Home(path)
 	if err := os.MkdirAll(Parent(path), 0777); err != nil {

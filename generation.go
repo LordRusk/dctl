@@ -64,7 +64,7 @@ func trimExt(str string) string {
 }
 
 // returns the extentions of a file
-// index.md -> .mc
+// index.md -> .md
 func getExt(str string) string {
 	sstr := strings.Split(str, ".")
 	return "." + sstr[len(sstr)-1]

@@ -20,10 +20,11 @@ import (
 type Menu map[interface{}]interface{}
 
 // A handler function.
+//
+// return's selected key and value
+// from Menu
 type HandlerFunc func(Menu) (interface{}, interface{}, error)
 
-// TODO implement menu usage in
-// Handler and Screen
 type Handler struct {
 	sc *bufio.Scanner
 	Hf HandlerFunc
