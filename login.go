@@ -12,8 +12,8 @@ import (
 	"github.com/lordrusk/dctl/ui"
 )
 
+// this was ripped from arikawa/session/session.go
 var emailLogin = func(email, pass, mfa string) (*state.State, error) {
-	// this was ripped from arikawa/session/session.go
 	client := api.NewClient("")
 	l, err := client.Login(email, pass)
 	if err != nil {

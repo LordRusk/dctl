@@ -68,8 +68,8 @@ func setupDefaultHandlerFunc(h *ui.Handler) {
 					continue
 				}
 
-				kav := d.Map()[string(d.Bytes())]
-				for k, v := range m { // doesnt work
+				kav := d.Map()[string(d.Bytes())+"\n"]
+				for k, v := range m {
 					if kav[0] == k && kav[1] == v {
 						return k, v, nil
 					}
